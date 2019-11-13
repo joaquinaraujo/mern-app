@@ -16,7 +16,7 @@ Pasos para levartar los servicios y correr el proyecto.
 
   - `[GET] api/users` Retorna todos los usuarios
   - `[GET] api/user/:id` Retorna el usuario segun corresponda el ID
-  - `[POST] api/user` Permite crear un usuario nuevo. En el `body` de la llamada debe ir con `{ "name": "Joaquin", "lastName": "Apellido" }`
+  - `[POST] api/user` Permite crear un usuario nuevo. En el `body` de la llamada debe ir con `{ "name": "Joaquin", "lastName": "Araujo" }`
   - `[PUT] api/user/:id` Permite actualizar los datos de un usuario
   - `[DELETE] api/user/:id` Permite eliminar un usuario
 
@@ -26,7 +26,7 @@ Pasos para levartar los servicios y correr el proyecto.
   - Ejecutar `npm build` para obtener los archivos estaticos `.js`, `.html`, `.css`
   - EJecutar `npm run serve` para servir los archivos estaticos anteriormente generados
 
-* Proximamente ha implementar:
+Proximamente ha implementar:
 
 - Pruebas unitarias para el API
 - Pruebas unitarias para el Public site
