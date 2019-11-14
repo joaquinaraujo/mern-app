@@ -28,6 +28,6 @@ Pasos para levartar los servicios y correr el proyecto.
 
 Proximamente ha implementar:
 
-- Pruebas unitarias para el API
-- Pruebas unitarias para el Public site
-- Implementar Docker para cada servicio y conectarlos con docker-compose
+- Pruebas unitarias para el API: Implementada en los enpoints `[GET] /api/users` y `[POST] /api/user`
+- Pruebas unitarias para el Public site (opcional)
+- Implementar Docker para cada servicio y conectarlos con docker-compose (opcional)
