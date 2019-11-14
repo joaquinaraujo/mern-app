@@ -8,8 +8,15 @@ const api = require('./api')
 const port = process.env.PORT || 3000
 
 const bodyParser = require('body-parser')
+const cors = require('cors')
+
+const corsOptions = {
+  origin: 'http://localhost:8000',
+  optionsSuccessStatus: 200
+}
 
 app.use(bodyParser.json())
+app.use(cors(corsOptions))
 app.use('/api', api)
 
 app.use((req, res, next) => res.status(404).json({ message: `Endpoint ${req.url} not found` }))
