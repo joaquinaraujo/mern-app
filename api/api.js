@@ -84,7 +84,7 @@ api.post('/user', [
     next(e)
   }
 
-  res.status(200).json(userCreated)
+  res.status(201).json(userCreated)
 })
 
 api.put('/user', [
