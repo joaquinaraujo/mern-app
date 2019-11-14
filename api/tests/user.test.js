@@ -22,6 +22,8 @@ test.before(() => {
   sandbox.stub(UserStub, 'findAll')
   sandbox.stub(UserStub, 'deleteByID')
 
+  UserStub.createOrUpdate.withArgs({}).returns({})
+
   dbStub = sandbox.stub()
   dbStub.returns(Promise.resolve({
     User: UserStub
@@ -57,8 +59,22 @@ test('get user by id', t => {
   t.pass()
 })
 
-test('create user', t => {
-  t.pass()
+test.cb('create user', t => {
+  const user = { name: 'Joaquin', lastName: 'Araujo' }
+
+  request(app)
+  .post('/api/user')
+  .set('Content-Type', 'application/json')
+  .send(user)
+  .expect('Content-Type', /json/)
+  .expect(201)
+  .end((err, res) => {
+    t.falsy(err, 'should not error')
+    t.end()
+
+    sandbox.assert.calledOnce(UserStub.createOrUpdate)
+    sandbox.assert.calledWith(UserStub.createOrUpdate, user)
+  })
 })
 
 test('modify user', t => {
