@@ -43,7 +43,7 @@ api.get('/users', async (req, res, next) => {
 })
 
 api.get('/user/:id', [
-  param('id').isInt({ min: 1, max: 11 })
+  param('id').isString().isLength({ min: 1, max: 5 })
 ], async (req, res, next) => {
   debug('[GET] A request has come to /user')
 
@@ -128,7 +128,7 @@ api.put('/user', [
 })
 
 api.delete('/user/:id', [
-  param('id').isInt({ min: 1, max: 11 })
+  param('id').isString().isLength({ min: 1, max: 5 })
 ],async (req, res, next) => {
   debug('[DELETE] A request has come to /user')
   const errors = validationResult(req)
@@ -147,15 +147,13 @@ api.delete('/user/:id', [
 
   if (!user) return res.status(404).json({ message: `User ${id} not found` })
 
-  let userId = null
-
   try {
-    [ userId ] = await User.deleteByID(id)
+    await User.deleteByID(id)
   } catch (e) {
     next(e)
   }
 
-  res.status(200).json({ message: `User ${userId} successfully removed` })
+  res.status(200).json({ message: `User ${id} successfully removed` })
 })
 
 module.exports = api
