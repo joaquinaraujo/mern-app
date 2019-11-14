@@ -21,12 +21,10 @@ const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue }
       dataIndex: 'lastName'
     },
     {
-      title: 'Action',
+      title: 'Acciones',
       key: 'action',
       render: (text, { id }) => (
-        <span>
-          <a onClick={() => handleOnDelete(id)}>Eliminar</a>
-        </span>
+        <Button type='link' onClick={() => handleOnDelete(id)}>Eliminar</Button>
       )
     }
   ]
@@ -111,15 +109,6 @@ const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue }
   return (
     <Layout>
       <SEO title='Home' />
-      <Typography.Title>Lista de usuarios</Typography.Title>
-
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        loading={!loaded}
-        size='small'
-      />
-
       <Typography.Title>Agregar un usuario</Typography.Title>
       <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={handleOnSubmit}>
         <Form.Item label='Nombre'>
@@ -146,6 +135,15 @@ const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue }
           </Button>
         </Form.Item>
       </Form>
+
+      <Typography.Title>Lista de usuarios</Typography.Title>
+
+      <Table
+        columns={columns}
+        dataSource={dataSource}
+        loading={!loaded}
+        size='small'
+      />
     </Layout>
   )
 }
