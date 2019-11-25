@@ -1,4 +1,4 @@
-# mern-app
+# mern-app (Ant Design + Auth0)
 
 Pasos para levartar los servicios y correr el proyecto.
 
