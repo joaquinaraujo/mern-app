@@ -7,7 +7,7 @@ import { Typography, Table, message, Form, Input, Button } from 'antd'
 
 import config from '../config'
 
-const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue } }) => {
+const IndexPage = (validateFields, setFieldsValue) => {
   const [ dataSource, setDataSource ] = useState([])
   const [ loaded, setLoaded ] = useState(false)
 
@@ -47,7 +47,6 @@ const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue }
 
   const handleOnSubmit = e => {
     e.preventDefault()
-
     validateFields((err, values) => {
       if (err) return
 
@@ -74,7 +73,11 @@ const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue }
 
           message.success(`${user.name} agregado con exito`)
 
-          setFieldsValue({ name: '', lastName: '' })
+          setFieldsValue({ 
+            user: [
+             { name: '', lastName: ''}
+            ] 
+          })
         })
         .catch(e => {
           message.error(e)
@@ -91,7 +94,7 @@ const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue }
       fetch(`${config.api.host}/api/users`, { signal })
         .then(data => data.json())
         .then(users => {
-          const dataWithKeys = users.map(u => ({ ...u, key: u.id }))
+          const dataWithKeys = users.map((u) => ({ ...u, key: u.id }))
           setDataSource(dataWithKeys)
           setLoaded(true)
         })
@@ -112,22 +115,20 @@ const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue }
       <Typography.Title>Agregar un usuario</Typography.Title>
       <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={handleOnSubmit}>
         <Form.Item label='Nombre'>
-          {getFieldDecorator('name', {
-            rules: [
+          <Form.Item name='name' rules={[
               { required: true, message: 'Nombre requerido' },
               { min: 5, message: 'Como minimo 5 letras' },
               { max: 255, message: 'Como maximo 255 letras' }
             ]
-          })(<Input />)}
+          }><Input /></Form.Item>
         </Form.Item>
         <Form.Item label='Apellido'>
-          {getFieldDecorator('lastName', {
-            rules: [
+        <Form.Item name='lastName' rules={[
               { required: true, message: 'Apellido requerido' },
               { min: 5, message: 'Como minimo 5 letras' },
               { max: 255, message: 'Como maximo 255 letras' }
             ]
-          })(<Input />)}
+          }><Input /></Form.Item>
         </Form.Item>
         <Form.Item wrapperCol={{ span: 12, offset: 5 }}>
           <Button type='primary' htmlType='submit'>
@@ -148,6 +149,4 @@ const IndexPage = ({ form: { getFieldDecorator, validateFields, setFieldsValue }
   )
 }
 
-const WrappedApp = Form.create({ name: 'users' })(IndexPage)
-
-export default WrappedApp
+export default IndexPage
