@@ -7,9 +7,10 @@ import { Typography, Table, message, Form, Input, Button } from 'antd'
 
 import config from '../config'
 
-const IndexPage = (validateFields, setFieldsValue) => {
+const IndexPage = (setFieldsValue) => {
   const [ dataSource, setDataSource ] = useState([])
   const [ loaded, setLoaded ] = useState(false)
+  const [form] = Form.useForm();
 
   const columns = [
     {
@@ -33,25 +34,25 @@ const IndexPage = (validateFields, setFieldsValue) => {
     fetch(`${config.api.host}/api/user/${id}`, { method: 'DELETE' })
       .then(res => {
         if (res.status === 200) {
+          const success = () => {
           message.success('Usuario eliminado con exito')
-
+          }
+          success();
           const data = dataSource.filter(user => user.id !== id)
 
           setDataSource(data)
         } else {
+          const errorM = () => {
           message.error('Ocurrio un error al intentar eliminar el usuario')
+          }
+          errorM();
         }
       })
-      .catch(e => message.error(e))
+      .catch((e) => message.error(e))
   }
 
-  const handleOnSubmit = e => {
-    e.preventDefault()
-    validateFields((err, values) => {
-      if (err) return
-
-      setLoaded(false)
-
+    const onFinish = values => {
+      console.log('Received values of form: ', values);
       const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -67,24 +68,20 @@ const IndexPage = (validateFields, setFieldsValue) => {
         .then(user => {
           const dataSourceCopy = Array.from(dataSource)
           dataSourceCopy.push(user)
-
+          
           setDataSource(dataSourceCopy)
           setLoaded(true)
-
+          const successadd = () => {
           message.success(`${user.name} agregado con exito`)
-
-          setFieldsValue({ 
-            user: [
-             { name: '', lastName: ''}
-            ] 
-          })
+          }
+          successadd();
+          form.resetFields()
         })
-        .catch(e => {
+        .catch((e) => {
           message.error(e)
           setLoaded(true)
         })
-    })
-  }
+    }
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -98,7 +95,7 @@ const IndexPage = (validateFields, setFieldsValue) => {
           setDataSource(dataWithKeys)
           setLoaded(true)
         })
-        .catch(e => {
+        .catch((e) => {
           message.error(e)
           setLoaded(true)
         })
@@ -113,7 +110,7 @@ const IndexPage = (validateFields, setFieldsValue) => {
     <Layout>
       <SEO title='Home' />
       <Typography.Title>Agregar un usuario</Typography.Title>
-      <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={handleOnSubmit}>
+      <Form form={form} labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onFinish={onFinish}>
         <Form.Item label='Nombre'>
           <Form.Item name='name' rules={[
               { required: true, message: 'Nombre requerido' },
